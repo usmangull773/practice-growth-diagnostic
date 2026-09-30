@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice Growth Diagnostic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#8db162;
+    --green-d:#6f9447;
+    --green-dd:#5c7d3a;
+    --ink:#242424;
+    --text:#3a3a3a;
+    --muted:#6b7280;
+    --bg:#ffffff;
+    --soft:#f5f8f0;
+    --line:#e6e9e0;
+    --flag:#c0492b;
+    --flag-bg:#fbeeea;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(20,30,15,.05), 0 10px 30px rgba(20,30,15,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:'Open Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Open Sans',Arial,Helvetica,sans-serif;color:var(--ink);line-height:1.2;margin:0}
+  p{margin:0 0 14px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .topbar{height:6px;background:linear-gradient(90deg,var(--green),var(--green-d))}
+
+  /* HERO */
+  .hero{padding:48px 0 44px;background:var(--soft);border-bottom:1px solid var(--line)}
+  .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:44px;align-items:center}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green-dd);background:#fff;border:1px solid var(--line);padding:7px 13px;border-radius:999px;margin-bottom:18px}
+  .hero h1{font-size:33px;font-weight:800;margin-bottom:14px}
+  .hero h1 .mark{color:var(--flag)}
+  .hero p.lead{font-size:17.5px;color:#40473f;margin-bottom:0}
+  .chip{display:inline-flex;align-items:center;gap:9px;margin-top:22px;background:var(--green);color:#fff;font-weight:700;font-size:14px;padding:11px 18px;border-radius:999px;box-shadow:var(--shadow)}
+  .chip .dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
+  .prepared{margin-top:16px;font-size:12.5px;color:var(--muted)}
+
+  /* HERO CARD (right side) */
+  .hero-card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .hc-head{background:var(--ink);color:#fff;font-size:13px;font-weight:700;letter-spacing:.04em;padding:14px 18px}
+  .hc-stats{display:grid;grid-template-columns:1fr 1fr}
+  .hc-stats .st{padding:20px 18px;border-top:1px solid var(--line)}
+  .hc-stats .st:nth-child(odd){border-right:1px solid var(--line)}
+  .hc-stats .st .n{font-size:32px;font-weight:800;color:var(--ink);line-height:1}
+  .hc-stats .st .n.bad{color:var(--flag)}
+  .hc-stats .st .l{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.4}
+
+  /* TABS */
+  .tabsbar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(20,30,15,.04)}
+  .tablabel{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:14px 0 0}
+  .tabs{display:flex;gap:8px;padding:12px 0 14px}
+  .tab{flex:1;appearance:none;cursor:pointer;font-family:inherit;font-size:14.5px;font-weight:700;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:13px 14px;text-align:center;white-space:nowrap;transition:all .15s ease}
+  .tab:hover{border-color:var(--green);background:var(--soft)}
+  .tab.active{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 6px 16px rgba(141,177,98,.35)}
+  .tab .tn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--soft);color:var(--green-dd);font-size:12.5px;font-weight:800;margin-right:9px}
+  .tab.active .tn{background:rgba(255,255,255,.25);color:#fff}
+
+  .panel{display:none;padding:42px 0 10px;animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green-dd);margin-bottom:10px}
+  .panel h2{font-size:26px;font-weight:800;margin-bottom:14px}
+  .panel .sub{font-size:17px;color:#40473f;max-width:78ch;margin-bottom:26px}
+
+  /* CALLOUT */
+  .callout{display:flex;gap:16px;background:var(--flag-bg);border:1px solid #f0ccc2;border-left:4px solid var(--flag);border-radius:12px;padding:18px 20px;margin:22px 0}
+  .callout .ic{font-weight:800;color:var(--flag);font-size:20px;line-height:1.4}
+  .callout b{color:var(--ink)}
+  code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-size:13.5px;color:var(--flag);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* ROOT-CAUSE FLOW */
+  .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:12px;margin:26px 0;text-align:center}
+  .flow .node{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 16px;box-shadow:var(--shadow);font-size:14px;font-weight:700;color:var(--ink);display:flex;flex-direction:column;justify-content:center}
+  .flow .node.bad{border-color:#f0ccc2;background:var(--flag-bg)}
+  .flow .node small{display:block;font-weight:400;color:var(--muted);margin-top:6px}
+  .flow .arrow{display:flex;align-items:center;color:var(--green);font-size:24px;font-weight:800}
+
+  /* FINDINGS TABLE */
+  .group{margin:26px 0}
+  .group h3{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--green-dd);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--soft)}
+  .row{display:grid;grid-template-columns:1.05fr 1.15fr 1.15fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;background:#fff}
+  .row>div{padding:16px 18px}
+  .row .c1{background:var(--flag-bg);border-right:1px solid var(--line)}
+  .row .c2{border-right:1px solid var(--line)}
+  .row .hd{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+  .row .c1 .hd{color:var(--flag)}
+  .row .c3 .hd{color:var(--green-dd)}
+  .row b{color:var(--ink)}
+
+  /* TIMELINE */
+  .tl{position:relative;margin:24px 0 8px;padding-left:30px;max-width:80ch}
+  .tl:before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+  .tl .item{position:relative;margin-bottom:24px}
+  .tl .item:before{content:"";position:absolute;left:-30px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--green)}
+  .tl .item.now:before{background:var(--green)}
+  .tl .when{font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--green-dd)}
+  .tl .item h4{margin:4px 0 4px;font-size:17px;color:var(--ink)}
+  .tl .item p{margin:0;font-size:15px;color:#454b43}
+
+  /* COMPLIANCE */
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+  .check{display:flex;gap:12px;align-items:flex-start;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .check .tick{flex:0 0 auto;width:23px;height:23px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .check span b{color:var(--ink)}
+
+  /* CTA */
+  .cta{background:var(--ink);color:#fff;margin-top:46px;padding:46px 0}
+  .cta-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+  .cta h2{color:#fff;font-size:27px;font-weight:800;margin-bottom:12px}
+  .cta p{color:#cfd6c8;font-size:16.5px;margin-bottom:0}
+  .badge{flex:0 0 auto;width:150px;height:150px;border-radius:50%;background:var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 12px 30px rgba(141,177,98,.35)}
+  .badge .b1{font-size:40px;font-weight:800;color:#fff;line-height:1}
+  .badge .b2{font-size:13px;font-weight:700;color:#fff;letter-spacing:.05em;margin-top:4px}
+  .foot{padding:22px 0;font-size:12.5px;color:var(--muted);text-align:center}
+
+  @media(max-width:820px){
+    .hero-grid{grid-template-columns:1fr;gap:28px}
+    .hero h1{font-size:28px}
+    .tabs{overflow-x:auto;padding-bottom:16px}
+    .tab{flex:0 0 auto;min-width:46%}
+    .flow{grid-template-columns:1fr}
+    .flow .arrow{justify-content:center;transform:rotate(90deg)}
+    .row{grid-template-columns:1fr}
+    .row .c1,.row .c2{border-right:0;border-bottom:1px solid var(--line)}
+    .checks{grid-template-columns:1fr}
+    .cta-grid{grid-template-columns:1fr;gap:26px;text-align:center}
+    .badge{margin:0 auto}
+  }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Independent diagnostic &nbsp;•&nbsp; Private gastroenterology practice, London</span>
+      <h1>Two of your four live Google Ads are sending paying clicks to pages that <span class="mark">do not exist</span>.</h1>
+      <p class="lead">That single gap sits behind both of the briefs you posted: weaker search visibility than your credentials deserve, and ad budget leaking on dead clicks. Here is precisely what is happening, why, and how each piece is resolved.</p>
+      <div class="chip"><span class="dot"></span> Full technical audit of your site, ads and profiles ready within 24 hours</div>
+      <div class="prepared">Prepared for drahmirahmad.com &nbsp;·&nbsp; October 2026</div>
+    </div>
+
+    <aside class="hero-card">
+      <div class="hc-head">At a glance, from your live setup</div>
+      <div class="hc-stats">
+        <div class="st"><div class="n">4</div><div class="l">live Google Ads running</div></div>
+        <div class="st"><div class="n bad">2</div><div class="l">land on a "page not found"</div></div>
+        <div class="st"><div class="n bad">0</div><div class="l">individual procedure pages</div></div>
+        <div class="st"><div class="n bad">60</div><div class="l">mobile performance, out of 100</div></div>
+      </div>
+    </aside>
+  </div>
+</header>
+
+<nav class="tabsbar">
+  <div class="wrap">
+    <div class="tablabel">Explore the breakdown</div>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="t1"><span class="tn">1</span>The core issue</button>
+      <button class="tab" data-tab="t2"><span class="tn">2</span>What is happening</button>
+      <button class="tab" data-tab="t3"><span class="tn">3</span>Your first 30 days</button>
+      <button class="tab" data-tab="t4"><span class="tn">4</span>Kept healthcare-safe</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- TAB 1 -->
+  <section class="panel active" id="t1">
+    <div class="kicker">One root cause, two symptoms</div>
+    <h2>Your procedures live as pictures, not as pages.</h2>
+    <p class="sub">On your site, conditions and procedures are shown as images on two hub pages, so there is no individual page for a patient, or for Google, to actually land on. Your ads then point to procedure web addresses that were never built, so the click arrives at a dead end. The same missing pages explain both problems you want solved.</p>
+
+    <div class="flow">
+      <div class="node">Patient searches or clicks your ad<small>"private colonoscopy London"</small></div>
+      <div class="arrow">&rarr;</div>
+      <div class="node bad">Lands on a page that was never built<small>a "page not found" screen</small></div>
+      <div class="arrow">&rarr;</div>
+      <div class="node">Patient leaves, budget spent<small>no enquiry, no booking</small></div>
+    </div>
+
+    <div class="callout">
+      <div class="ic">!</div>
+      <div><b>Verified on your live setup:</b> your "Private Colonoscopy London" ad points to <code>/colonoscopy/private</code> and your "Bowel Specialist Near Me" ad points to <code>/bowel/specialist</code>. Both currently return "page not found". Your other two ads point at the homepage, not a relevant procedure page.</div>
+    </div>
+
+    <p>Because those procedure pages do not exist, Google has nothing to rank for the exact searches your future patients type, and your paid clicks have nowhere useful to go. Build the pages once, and both the search side and the ads side start working from the same foundation.</p>
+  </section>
+
+  <!-- TAB 2 -->
+  <section class="panel" id="t2">
+    <div class="kicker">The findings, in plain terms</div>
+    <h2>What is happening, why it matters, how it is fixed.</h2>
+    <p class="sub">Each of these was checked directly on your live website and adverts. Nothing here is guesswork.</p>
+
+    <div class="group">
+      <h3>On the search side</h3>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>Your homepage title reads only "Dr Ahmir Ahmad"</b>, with no specialty or location.</div>
+        <div class="c2"><span class="hd">Why it matters</span>Search engines read the title first. As it stands, it does not tell Google you are a gastroenterologist in London.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Rewrite the titles and descriptions across the site around your specialty, procedures and locations.</div>
+      </div>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>Conditions and procedures exist only as images</b>, with no individual pages for colonoscopy, gastroscopy, IBS, reflux, rectal bleeding or bowel polyps.</div>
+        <div class="c2"><span class="hd">Why it matters</span>Google cannot rank a page it cannot read, so patients searching those procedures find other clinics instead of you.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Build a proper page for each key procedure, written around the real questions patients ask: preparation, the day itself, recovery, fees.</div>
+      </div>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>No medical structured data, and a missing homepage description</b>, plus a default "Hello world" page still live on the site.</div>
+        <div class="c2"><span class="hd">Why it matters</span>These are the trust and clarity signals Google reads for medical sites. Right now they are absent or untidy.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Add physician and clinic structured data, write proper descriptions, and remove the leftover default content.</div>
+      </div>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>Your profile details are not consistent everywhere</b>, and a listing describes you with a procedure outside your field.</div>
+        <div class="c2"><span class="hd">Why it matters</span>When your details differ across platforms, Google trusts them less, and that weakens your local visibility.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Align every profile to one consistent set of details, all pointing back to your site, each listing your correct specialty.</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>On the Google Ads side</h3>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>Two of your four live ads land on "page not found".</b></div>
+        <div class="c2"><span class="hd">Why it matters</span>You pay for every click, and half of your ad set sends that click to a dead end, so the spend produces nothing.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Point every ad to a real, relevant page built in the search work, so the click and the budget land somewhere useful.</div>
+      </div>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>Two separate Google Tag Manager containers load at the same time</b> (<code>GTM-5HR3HHX4</code> and <code>GTM-5RQ97LFQ</code>).</div>
+        <div class="c2"><span class="hd">Why it matters</span>Running two at once commonly double counts your analytics and conversions, so the numbers you decide on cannot be trusted.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Consolidate to one clean measurement setup so every enquiry and booking is counted once, correctly.</div>
+      </div>
+
+      <div class="row">
+        <div class="c1"><span class="hd">Finding</span><b>Ad wording leans on phrases like "Expert" and "Latest Techniques".</b></div>
+        <div class="c2"><span class="hd">Why it matters</span>UK healthcare advertising rules are strict on claims like these, which puts the account at needless risk.</div>
+        <div class="c3"><span class="hd">How it is fixed</span>Rewrite the ads to be fully compliant and still compelling, with your genuine credentials doing the persuading.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3 -->
+  <section class="panel" id="t3">
+    <div class="kicker">Sequenced for impact</div>
+    <h2>Quickest, highest-value fixes first. The build follows.</h2>
+    <p class="sub">The order is deliberate: stop the waste and claim the easy wins in the first days, then build the pages that carry the long term.</p>
+
+    <div class="tl">
+      <div class="item now">
+        <div class="when">Within 24 hours</div>
+        <h4>Full technical audit, and stop the bleeding</h4>
+        <p>Deliver the complete audit of your site, ads and profiles, and immediately address the two ads pointing at "page not found" and the duplicated tracking, so budget and data stop leaking straight away.</p>
+      </div>
+      <div class="item">
+        <div class="when">Week 1</div>
+        <h4>Quick wins</h4>
+        <p>Rewrite titles and descriptions with your specialty and location, remove the leftover default content, and consolidate to one clean measurement setup.</p>
+      </div>
+      <div class="item">
+        <div class="when">Weeks 2 to 3</div>
+        <h4>Build the pages that matter</h4>
+        <p>Create individual pages for your top procedures and conditions, written around the real questions patients ask, so both search and your ads finally have proper pages to send people to.</p>
+      </div>
+      <div class="item">
+        <div class="when">Weeks 3 to 4</div>
+        <h4>Align, connect, hand over</h4>
+        <p>Bring every profile into line with one consistent set of details, add medical structured data, rebuild ad targeting around high intent searches, confirm clean conversion tracking, and hand it over so you can maintain it yourself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4 -->
+  <section class="panel" id="t4">
+    <div class="kicker">Compliance is built in, not bolted on</div>
+    <h2>Every change follows UK healthcare advertising rules.</h2>
+    <p class="sub">Growth in a medical field only helps if it is safe. All content and ad copy is written to the UK ASA and CAP standards, and to Google's standard for health content.</p>
+
+    <div class="checks">
+      <div class="check"><span class="tick">&#10003;</span><span><b>No outcome or efficacy claims.</b> Nothing promises a result, which is exactly what the rules require.</span></div>
+      <div class="check"><span class="tick">&#10003;</span><span><b>No superlatives.</b> Wording like "best" or "leading" is removed, including from your current ads.</span></div>
+      <div class="check"><span class="tick">&#10003;</span><span><b>Credentials shown clearly.</b> Your GMC standing and qualifications are presented properly throughout.</span></div>
+      <div class="check"><span class="tick">&#10003;</span><span><b>Written for medical trust.</b> Procedure pages answer genuine patient questions, the way health content is expected to.</span></div>
+    </div>
+  </section>
+
+</main>
+
+<section class="cta">
+  <div class="wrap cta-grid">
+    <div>
+      <h2>This is a snapshot. The full picture is one step away.</h2>
+      <p>What you have read here was checked directly on your live site and ads. I can turn it into a complete technical audit of your website, Google Ads and profiles within 24 hours, with each fix laid out in the order above.</p>
+    </div>
+    <div class="badge"><span class="b1">24h</span><span class="b2">FULL AUDIT</span></div>
+  </div>
+</section>
+
+<div class="foot wrap">Prepared as an independent snapshot for drahmirahmad.com &nbsp;·&nbsp; findings checked on live, publicly visible pages.</div>
+
+<script>
+  (function(){
+    var tabs=document.querySelectorAll('.tab');
+    var panels=document.querySelectorAll('.panel');
+    var bar=document.querySelector('.tabsbar');
+    tabs.forEach(function(t){
+      t.addEventListener('click',function(){
+        tabs.forEach(function(x){x.classList.remove('active')});
+        panels.forEach(function(p){p.classList.remove('active')});
+        t.classList.add('active');
+        var el=document.getElementById(t.getAttribute('data-tab'));
+        if(el){el.classList.add('active');}
+      });
+    });
+  })();
+</script>
+</body>
+</html>
